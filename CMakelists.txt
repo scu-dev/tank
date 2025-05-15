@@ -78,3 +78,7 @@ endif()
 if(EXISTS "${CMAKE_SOURCE_DIR}/sounds")
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/sounds"  "$<TARGET_FILE_DIR:${PROJECT_NAME}>/sounds")
 endif()
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/map")
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/map"  "$<TARGET_FILE_DIR:${PROJECT_NAME}>/map")
+endif()

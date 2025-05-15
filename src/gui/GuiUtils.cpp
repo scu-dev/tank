@@ -15,38 +15,38 @@ namespace GuiUtils {
             PushStyleColor(ImGuiCol_Border, transparent);
         }
         Begin(id, NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
-        auto drawList = ImGui::GetWindowDrawList();
+        auto drawList = GetWindowDrawList();
         drawList->PushClipRectFullScreen();
     }
 
-    void tlWindow(const char* id) noexcept {
-        windowBase(id);
+    void tlWindow(const char* id, bool styled) noexcept {
+        windowBase(id, styled);
         auto size = GetWindowSize();
         SetWindowPos(ImVec2(0.0f, 0.0f));
     }
 
-    void blWindow(const char* id) noexcept {
-        windowBase(id);
+    void blWindow(const char* id, bool styled) noexcept {
+        windowBase(id, styled);
         auto size = GetWindowSize();
         SetWindowPos(ImVec2(0.0f, cache.height - size.y));
     }
 
-    void brWindow(const char* id) noexcept {
-        windowBase(id);
+    void brWindow(const char* id, bool styled) noexcept {
+        windowBase(id, styled);
         auto size = GetWindowSize();
         SetWindowPos(ImVec2(cache.width - size.x, cache.height - size.y));
     }
 
-    void centerWindow(const char* id, bool style) noexcept {
-        windowBase(id, style);
+    void centerWindow(const char* id, bool styled) noexcept {
+        windowBase(id, styled);
         auto size = GetWindowSize();
         SetWindowPos(ImVec2((cache.width - size.x) / 2.0f, (cache.height - size.y) / 2.0f));
     }
 
-    void endWindow(bool style) noexcept {
-        auto drawList = ImGui::GetWindowDrawList();
+    void endWindow(bool styled) noexcept {
+        auto drawList = GetWindowDrawList();
         drawList->PopClipRect();
-        if(style) PopStyleColor(2);
+        if(styled) PopStyleColor(2);
         End();
     }
 

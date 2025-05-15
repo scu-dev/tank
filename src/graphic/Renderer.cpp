@@ -4,6 +4,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
+#include "../Game.hpp"
 #include "../util.hpp"
 #include "../gui/Gui.hpp"
 #include "Renderer.hpp"
@@ -15,24 +16,26 @@ namespace Renderer {
 
     SDL_Window* window;
     SDL_Renderer* renderer;
-    i32 realDim = baseDim;
+    i32 realWidth = baseDim;
+    i32 realHeight = baseDim + barHeight;
     float scale = 1.0f;
 
     //ID = Ordered, 51, 52
     Texture atlas, background, gameover;
-    SDL_FRect bgRect;
+    SDL_FRect bgRectD;
 
     void init() noexcept {
         if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO)) abort();
         cout << "Creating window..." << endl;
-        if (!SDL_CreateWindowAndRenderer(CJK(u8"坦克大战"), baseDim, baseDim, SDL_WINDOW_HIGH_PIXEL_DENSITY, &window, &renderer)) abort();
+        if (!SDL_CreateWindowAndRenderer(CJK(u8"坦克大战"), baseDim, baseDim + barHeight, SDL_WINDOW_HIGH_PIXEL_DENSITY, &window, &renderer)) abort();
         SDL_SetRenderVSync(renderer, 1);
         SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
         scale = SDL_GetWindowDisplayScale(window);
         cout << scale << endl;
-        realDim = baseDim * scale;
-        bgRect = SDL_FRect{ 0, 0, static_cast<float>(realDim), static_cast<float>(realDim) };
-        SDL_SetWindowSize(window, realDim, realDim);
+        realWidth *= scale;
+        realHeight *= scale;
+        bgRectD = SDL_FRect{ 0, 0, static_cast<float>(realWidth), static_cast<float>(realWidth) };
+        SDL_SetWindowSize(window, realWidth, realHeight);
         atlas.surface = IMG_Load("images/texture_atlas.png");
         background.surface = IMG_Load("images/background.png");
         gameover.surface = IMG_Load("images/gameover.png");
@@ -50,7 +53,7 @@ namespace Renderer {
 
     void render() noexcept {
         SDL_RenderClear(Renderer::renderer);
-        SDL_RenderTexture(renderer, background.texture, &bgRect, &bgRect);
+        SDL_RenderTexture(renderer, background.texture, &bgRectS, &bgRectD);
         SDL_RenderTexture(renderer, atlas.texture, NULL, NULL);
         Gui::render();
         SDL_RenderPresent(Renderer::renderer);

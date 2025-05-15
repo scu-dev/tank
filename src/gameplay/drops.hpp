@@ -1,5 +1,5 @@
 ﻿#pragma once
 
-namespace Game {
+namespace Tank {
 
 }
